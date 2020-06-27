@@ -1,9 +1,17 @@
 import Router from "koa-router";
-
+import {SearchOrder} from './../models/index';
 const router = new Router();
 
 router.post('/search', async (ctx, next) => {
-  ctx.body = {name: ctx.request.body.name};
+  let searchOrder = new SearchOrder({
+      query: ctx.request.body.query,
+      status: 'received'
+  });
+  searchOrder = await searchOrder.save();
+  ctx.body = {
+    status: 'Search order received',
+    searchOrder
+  };
   await next();
 });
 
