@@ -9,19 +9,25 @@ router.post('/search', async (ctx, next) => {
   });
   searchOrder = await searchOrder.save();
   ctx.body = {
-    status: 'Search order received',
     searchOrder
   };
   await next();
 });
 
 router.get('/search-order/:id', async (ctx, next) => {
-  ctx.body = {name: ctx.params.id};
+  let searchOrderId = ctx.params.id;
+  let searchOrder = await SearchOrder.findById(searchOrderId);
+  ctx.body = {
+    searchOrder
+  };
   await next();
 });
 
 router.get('/search-orders', async (ctx, next) => {
-  ctx.body = {name: "tomás"};
+  let searchOrders = await SearchOrder.find();
+  ctx.body = {
+    searchOrders
+  };
   await next();
 });
 
@@ -29,4 +35,5 @@ router.get('/category/:id', async (ctx, next) => {
   ctx.body = {name: ctx.params.id};
   await next();
 });
+
 export default router;

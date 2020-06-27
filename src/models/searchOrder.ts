@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-const SearchOrder = new mongoose.Schema({
+const SearchOrder = new Schema({
     query: String,
     provider: String,
     options: {
