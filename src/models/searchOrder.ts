@@ -12,8 +12,7 @@ const SearchOrder = new Schema({
     status: {
       type: String,
       enum: ['received', 'processing', 'fulfilled', 'failed']
-    },
-    results: [String]
+    }
 });
 
 export default mongoose.model("searchOrder", SearchOrder);

@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const Product = new Schema({
-    SKU: String,
+    SKU: {
+      type: String,
+      required: true
+    },
     name: String,
     price: String,
     originalPrice: String,
@@ -11,7 +14,8 @@ const Product = new Schema({
     images: String,
     searchQueries: [{
         type: Schema.Types.ObjectId,
-        ref: 'SearchOrder'
+        ref: 'SearchOrder',
+        required: true
     }]
 });
 

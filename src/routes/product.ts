@@ -8,6 +8,7 @@ router.post('/search', async (ctx, next) => {
       status: 'received'
   });
   searchOrder = await searchOrder.save();
+
   ctx.body = {
     searchOrder
   };
@@ -35,5 +36,11 @@ router.get('/category/:id', async (ctx, next) => {
   ctx.body = {name: ctx.params.id};
   await next();
 });
+
+router.post('/results', async (ctx, next) => {
+  ctx.body = {name: ctx.params.id};
+  await next();
+});
+
 
 export default router;
