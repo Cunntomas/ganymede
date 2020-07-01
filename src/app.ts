@@ -3,9 +3,8 @@ import Router from "koa-router";
 import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
 import * as routes from './routes/index';
+
 
 class App {
     public app: Koa;
@@ -28,7 +27,7 @@ class App {
         Object.keys(routes).forEach((key) => {
             this.router.use(`/api/${key}`, routes[key].routes());
         });
-        
+
         this.app.use(this.router.routes());
     }
 

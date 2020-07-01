@@ -1,5 +1,7 @@
-import SearchOrder from './searchOrder';
+import {SearchOrder} from './searchOrder';
+import {Product} from './product';
 
 export {
-  SearchOrder
+  SearchOrder,
+  Product
 }

@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import {ISearchOrder} from '../interfaces';
 const Schema = mongoose.Schema;
 
-const SearchOrder = new Schema({
+const SearchOrderSchema = new Schema({
     query: String,
     provider: String,
     options: {
@@ -9,10 +10,8 @@ const SearchOrder = new Schema({
       type: String
     },
     callbackUrl: String,
-    status: {
-      type: String,
-      enum: ['received', 'processing', 'fulfilled', 'failed']
-    }
+    status: String
 });
 
-export default mongoose.model("searchOrder", SearchOrder);
+
+export let SearchOrder = mongoose.model<ISearchOrder>('searchOrder', SearchOrderSchema);
