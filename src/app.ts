@@ -4,14 +4,14 @@ import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
 import mongoose from 'mongoose';
 import * as routes from './routes/index';
-
+const MONGODB_HOST = process.env.MONGODB_HOST;
+const MONGODB_PORT = process.env.MONGODB_PORT;
+const MONGODB_DB = process.env.MONGODB_DB;
 
 class App {
     public app: Koa;
     public router: Router;
-    private MONGODB_HOST = process.env.MONGODB_HOST;
-    private MONGODB_PORT = process.env.MONGODB_PORT;
-    private MONGODB_DB = process.env.MONGODB_DB;
+
 
     constructor() {
         this.setConfig();
@@ -33,7 +33,7 @@ class App {
 
     private setMongoConfig() {
         return mongoose.connect(
-          `mongodb://${this.MONGODB_HOST}:${this.MONGODB_PORT}/${this.MONGODB_DB}`,
+          `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DB}`,
           {useNewUrlParser: true});
     }
 }

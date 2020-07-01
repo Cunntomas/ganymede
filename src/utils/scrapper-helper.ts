@@ -1,20 +1,20 @@
 import request from 'request-promise';
 import {ISearchOrder} from '../interfaces';
 import {SearchOrder} from '../models';
+const SCRAPPER_ENDPOINT = process.env.SCRAPPER_ENDPOINT;
+const CALLBACK_URL = process.env.CALLBACK_URL;
 
 class ScrapperHelper {
-  private SCRAPPER_ENDPOINT = process.env.SCRAPPER_ENDPOINT;
-  private CALLBACK_URL = process.env.CALLBACK_URL;
 
   public async sendSearch(searchJob: ISearchOrder) {
       let body = {
         query: searchJob.query,
         provider: searchJob.provider,
-        callbackURL: this.CALLBACK_URL,
+        callbackURL: CALLBACK_URL,
         searchID: searchJob._id
       };
       return request({
-        uri: this.SCRAPPER_ENDPOINT,
+        uri: SCRAPPER_ENDPOINT,
         method: 'POST',
         body,
         json: true
