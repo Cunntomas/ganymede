@@ -1,11 +1,8 @@
 import mongoose from 'mongoose';
 
-interface IProduct extends mongoose.Document  {
+export interface IProduct extends mongoose.Document  {
   _id: string,
-  SKU: {
-    type: string,
-    required: boolean
-  },
+  SKU: string,
   name: string,
   price: string,
   originalPrice: string,
@@ -15,4 +12,10 @@ interface IProduct extends mongoose.Document  {
   searchQueries: string
 }
 
-export default IProduct;
+export interface IProductResponse {
+  SKU: string;
+  itemImageURL: string;
+  itemName: string;
+  itemPrice: string;
+  categoryID: string
+ }

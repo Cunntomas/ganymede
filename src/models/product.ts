@@ -13,7 +13,7 @@ const ProductSchema = new Schema({
     productCategoryID: String,
     description: String,
     image: String,
-    searchQueries: {
+    searchOrder: {
         type: Schema.Types.ObjectId,
         ref: 'SearchOrder',
         required: true
