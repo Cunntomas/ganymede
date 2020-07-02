@@ -5,9 +5,8 @@ import bodyParser from "koa-bodyparser";
 const cors = require('@koa/cors');
 import mongoose from 'mongoose';
 import * as routes from './routes/index';
-const MONGODB_HOST = process.env.MONGODB_HOST;
-const MONGODB_PORT = process.env.MONGODB_PORT;
-const MONGODB_DB = process.env.MONGODB_DB;
+const MONGO_URI = process.env.MONGO_URI;
+const MONGO_DB = process.env.MONGO_DB;
 
 class App {
     public app: Koa;
@@ -34,9 +33,7 @@ class App {
     }
 
     private setMongoConfig() {
-        return mongoose.connect(
-          `mongodb://${MONGODB_HOST}:${MONGODB_PORT}/${MONGODB_DB}`,
-          {useNewUrlParser: true});
+        return mongoose.connect(MONGO_URI, {dbName: MONGO_DB, useNewUrlParser: true});
     }
 }
 
