@@ -2,6 +2,7 @@ import Router from "koa-router";
 import {IProductResponse} from '../interfaces';
 import {SearchOrder, Product} from './../models';
 import scrapperHelper from '../utils/scrapper-helper';
+import {sendResults} from '../utils/callback-helper';
 const router = new Router();
 const SEARCH_ORDER_LIMIT = Number(process.env.SEARCH_ORDER_LIMIT) || 10;
 const PRODUCT_LIMIT = Number(process.env.PRODUCT_LIMIT) || 10;
@@ -9,6 +10,14 @@ const PRODUCT_LIMIT = Number(process.env.PRODUCT_LIMIT) || 10;
 router.post('/search', async (ctx, next) => {
   try {
     const data = ctx.request.body;
+    if(!data.query || !data.provider || !data.callbackUrl) {
+      ctx.body = {
+        error: 'missing_fields',
+        message: 'query, provider and callbackUrl are mandatory fields.'
+      }
+      ctx.status = 404;
+      await next();
+    }
     let searchOrder = new SearchOrder({
       query: data.query,
       status: 'received',
@@ -27,6 +36,7 @@ router.post('/search', async (ctx, next) => {
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
+    await next();
   }
 });
 
@@ -41,6 +51,7 @@ router.get('/search-order/:id', async (ctx, next) => {
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
+    await next();
   }
 });
 
@@ -62,6 +73,7 @@ router.get('/search-orders', async (ctx, next) => {
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
+    await next();
   }
 });
 
@@ -79,7 +91,6 @@ router.get('/category/:id', async (ctx, next) => {
     let count = await Product.count({});
     let skip = page * PRODUCT_LIMIT;
 
-    console.log();
     if(PRODUCT_LIMIT * (page + 1) < count) {
       page++;
       ctx.body.nextPage = `/api/product/category/${productCategoryID}?page=${page}`;
@@ -91,9 +102,11 @@ router.get('/category/:id', async (ctx, next) => {
 
     ctx.body.products = products;
     await next();
+
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
+    await next();
   }
 });
 
@@ -103,7 +116,7 @@ router.post('/results', async (ctx, next) => {
     let order = await SearchOrder.findOne({'_id': request.searchJob});
 
     if(!order) {
-      ctx.body = { message: 'Invalid SearchOrderID' }
+      ctx.body = { message: 'Invalid SearchOrderID' };
       ctx.status = 400;
       await next();
     }
@@ -124,14 +137,18 @@ router.post('/results', async (ctx, next) => {
         product.save();
       });
       order.status = 'fulfilled';
+      sendResults(request.results, order);
     }
 
-    await order.save()
+    await order.save();
+
+
     ctx.body = { message: 'results received'};
     await next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
+    await next();
   }
 });
 

@@ -25,6 +25,7 @@
       true,
       "rxjs/Rx"
     ],
+    "indent": [2, 4, {"SwitchCase": 1}],
     "interface-name": false,
     "max-classes-per-file": false,
     "max-line-length": [
@@ -81,6 +82,7 @@
     "no-output-on-prefix": true,
     "no-output-rename": true,
     "no-outputs-metadata-property": true,
+    "semi": [2,"always"],
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
