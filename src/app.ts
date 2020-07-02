@@ -2,6 +2,7 @@ import Koa from "koa";
 import Router from "koa-router";
 import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
+const cors = require('@koa/cors');
 import mongoose from 'mongoose';
 import * as routes from './routes/index';
 const MONGODB_HOST = process.env.MONGODB_HOST;
@@ -23,6 +24,7 @@ class App {
         this.router = new Router();
         this.app.use( logger() );
         this.app.use( bodyParser() );
+        this.app.use(cors());
 
         Object.keys(routes).forEach((key) => {
             this.router.use(`/api/${key}`, routes[key].routes());
