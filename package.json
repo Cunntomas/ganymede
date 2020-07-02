@@ -9,7 +9,7 @@
   "type": "module",
   "author": "",
   "license": "ISC",
-  "engine": {
+  "engines": {
     "node": "12.11.1"
   },
   "dependencies": {
