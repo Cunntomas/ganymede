@@ -5,6 +5,7 @@ import bodyParser from "koa-bodyparser";
 const cors = require('@koa/cors');
 import mongoose from 'mongoose';
 import * as routes from './routes/index';
+//PROCESS MAKES A CALL TO THE SO, SO IT IS MORE PERFORMANT TO CALL ONLY ONCE AND USE THE REFERENCE
 const MONGO_URI = process.env.MONGO_URI;
 const MONGO_DB = process.env.MONGO_DB;
 
@@ -25,6 +26,8 @@ class App {
         this.app.use( bodyParser() );
         this.app.use(cors());
 
+        //THE ROUTES ARE IMPORTED FROM THE ROUTES FOLDER AND CREATED FOLLOWING THE FORMAT
+        //API/name_of_file/route
         Object.keys(routes).forEach((key) => {
             this.router.use(`/api/${key}`, routes[key].routes());
         });
