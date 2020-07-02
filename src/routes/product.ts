@@ -15,8 +15,8 @@ router.post('/search', async (ctx, next) => {
         error: 'missing_fields',
         message: 'query, provider and callbackUrl are mandatory fields.'
       }
-      ctx.status = 404;
-      await next();
+      ctx.status = 400;
+      return next();
     }
     let searchOrder = new SearchOrder({
       query: data.query,
@@ -28,16 +28,18 @@ router.post('/search', async (ctx, next) => {
       searchOrder.options = data.options;
     }
     searchOrder = await searchOrder.save();
+    console.log(searchOrder);
     scrapperHelper.sendSearch(searchOrder);
     ctx.body = {
       searchOrder
     };
-    await next();
+    return next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
-    await next();
+    return next();
   }
+
 });
 
 router.get('/search-order/:id', async (ctx, next) => {
@@ -47,11 +49,11 @@ router.get('/search-order/:id', async (ctx, next) => {
     ctx.body = {
       searchOrder
     };
-    await next();
+    return next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
-    await next();
+    return next();
   }
 });
 
@@ -69,11 +71,11 @@ router.get('/search-orders', async (ctx, next) => {
 
     let searchOrders = await SearchOrder.find().limit(SEARCH_ORDER_LIMIT).skip(skip);
     ctx.body.searchOrders = searchOrders;
-    await next();
+    return next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
-    await next();
+    return next();
   }
 });
 
@@ -84,7 +86,7 @@ router.get('/category/:id', async (ctx, next) => {
     if(!productCategoryID) {
       ctx.body = { message: 'Invalid category ID' };
       ctx.status = 400;
-      await next();
+      return next();
     }
 
     let page = Number(ctx.request.query.page) || 0;
@@ -101,8 +103,7 @@ router.get('/category/:id', async (ctx, next) => {
     }).limit(PRODUCT_LIMIT).skip(skip);
 
     ctx.body.products = products;
-    await next();
-
+    return next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
@@ -118,7 +119,7 @@ router.post('/results', async (ctx, next) => {
     if(!order) {
       ctx.body = { message: 'Invalid SearchOrderID' };
       ctx.status = 400;
-      await next();
+      return next();
     }
 
     order.status = 'failed';
@@ -144,11 +145,11 @@ router.post('/results', async (ctx, next) => {
 
 
     ctx.body = { message: 'results received'};
-    await next();
+    return next();
   } catch(error) {
     ctx.body = { message: 'An error has ocurred' }
     ctx.status = 500;
-    await next();
+    return next();
   }
 });
 
