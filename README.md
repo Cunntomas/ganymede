@@ -1,8 +1,8 @@
-#Ganymede
+# Ganymede
 
-###Ganymede exposes the web server API, handles persistance and delegates the search jobs.
+### Ganymede exposes the web server API, handles persistance and delegates the search jobs.
 
-###Routes
+### Routes
 > POST /api/product/search
 
 Receives the query, the provider (only "MELI" for the moment) and a callback url
